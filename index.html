@@ -70,6 +70,7 @@
 
             <tabset ng-if="employeeTypes.length !=0">
               <tab ng-repeat="tab in employeeTypes" heading="{{tab.name}}s" active="tab.active" ng-click="getEmployees(tab.name)">
+              </br>
                 <p ng-repeat="list in requestedEmployeeList">{{list}}</p>
               </tab>
             </tabset>
