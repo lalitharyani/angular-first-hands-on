@@ -1,0 +1,21 @@
+.success{
+	text-align:center;
+	color: green;
+  font-weight: bold;
+}
+
+.remove{
+	text-align:center;
+	color: red;
+  font-weight: bold;
+}
+
+.default{
+    opacity: 1;
+}
+
+.fade{
+    -webkit-transition: opacity 2s; /* For Safari 3.1 to 6.0 */
+    transition: opacity 2s;
+    opacity: 0;
+}

@@ -1,0 +1,133 @@
+<html>
+  <head>
+    <title>Employee Management System!</title>
+    <link rel="stylesheet" href="bootstrap-min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="angular-min.js"></script>
+    <script src="app.js"></script>
+  </head>
+  <h1 style="text-align: center;">Employee Management System</h1>
+  <body ng-app="EmployeeManagement">
+    <div class="container">
+      
+      <div ng-controller="MainCtrl">
+
+          <button ng-click="showCreateType()" class = "btn btn-info">Create Employee Type</button>
+          &nbsp;&nbsp;
+          <button ng-click="showRemoveType()" class = "btn btn-info">Delete Employee Type</button>
+          &nbsp;&nbsp;
+          <button ng-click="EmployeeList()" class = "btn btn-info">Employee List</button>
+          &nbsp;&nbsp;
+          <button ng-click="addEmployee()" class = "btn btn-info">Add Employee</button>
+
+        
+          
+          <div ng-hide="createEmployeeType">
+            <h2>Create Employee Type</h2>
+            <form name="CreateTypeform">
+
+              <div class="row col-lg-6">
+                <div ng-show="added" ng-hide= "error" class="success">{{submit_msg}}</div>
+                <div ng-show="error" ng-hide= "added" class="remove">{{error_msg}}</div>
+                <input class="form-control" type="text" ng-model="newType.name" placeholder="Type Name" required />
+              </div>
+              <div class="clearfix"></div>
+              </br>
+
+              <div class="row col-lg-6">
+                <button class="btn btn-primary" ng-click="add()">Add</button>
+                <button class="btn" ng-click="showCreateType()">Cancel</button>
+              </div>
+
+            </form>
+            
+          </div>
+
+          <div ng-show="createEmployeeType"></div>
+
+          <div ng-hide="deleteEmployeeType">
+            <h2>Delete Employee Type</h2>
+              <div class="row col-lg-6">
+                <div ng-show="removed" class="remove">{{remove_msg}}</div>
+                <select ng-model="SelectOptions" class= "form-control" ng-options="c.id as c.name for c in employeeTypes">
+                </select>
+              </div>
+              <div class="clearfix"></div>
+              </br>
+              <div class="row col-lg-6">
+                <button class="btn btn-primary" ng-click="remove($index)" ng-disabled="employeeTypes.length == 0">Remove</button>
+                <button class="btn" ng-click="showRemoveType()">Cancel</button>
+              </div>
+
+            
+          </div>
+
+          <div ng-show="deleteEmployeeType"></div>
+         
+
+          <div ng-hide="showEmployeeList">
+            <h2>Employee List</h2>
+              <!-- <ul>
+                <li ng-repeat="tab in tabs" 
+                    ng-class="{active:isActiveTab(tab.url)}" 
+                    ng-click="onClickTab(tab)">{{tab.title}}</li>
+                </ul> -->
+              <div class="clearfix"></div>
+              </br>
+
+              <div class="row col-lg-6">
+                <button class="btn btn-primary" ng-click="editEmployee()">Edit</button>
+                <button class="btn" ng-click="removeEmployee()">Remove</button>
+              </div>
+            
+          </div>
+
+          <div ng-show="showEmployeeList"></div>
+
+
+          <div ng-hide="addNewEmployee">
+            <form name="newEmployeeForm">
+              <h2>Add Employee</h2>
+                
+                <div class="row col-lg-6">
+                  <div ng-show="employeeAdded" ng-hide= "employeeUndo" class="success">{{employeeSuccessMsg}}</div>
+                  <div ng-show="employeeUndo"  ng-hide= "employeeAdded" class="remove">{{employeeUndoMsg}}</div>
+                  <input class="form-control" type="text" ng-model="newEmployee.name" placeholder="Name" required />
+                </div>
+                <div class="clearfix"></div></br>
+
+                <div class="row col-lg-6">
+                  <input class="form-control" type="text" ng-model="newEmployee.designation" placeholder="Designation" required />
+                </div>
+                <div class="clearfix"></div></br>
+
+                <div class="row col-lg-6">
+                  <select class= "form-control" ng-model="newEmployee.type" required />
+                    <option ng-repeat="employeeType in employeeTypes" value="{{employeeType.name}}">{{employeeType.name}}</option>
+                    <option style="display:none" value="">Select a Type</option>
+                  </select>
+                </div>
+                <div class="clearfix"></div> </br>
+               
+                <div class="row col-lg-6">
+                  <a class="btn btn-primary" ng-disabled="employeeList.length == 0" ng-click="undo()">Undo</a>&nbsp;&nbsp;
+                  <button class="btn btn-success" ng-click="createNewEmployee()">Add</button><div class="clearfix"></div>
+                  You can Undo for the last three added employees only.
+                </div>
+
+            </form>
+            
+          </div>
+
+          <div ng-show="addNewEmployee"></div>
+
+
+      </div>
+
+
+    </div>
+   
+
+
+  </body>
+</html>
