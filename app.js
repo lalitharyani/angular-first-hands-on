@@ -1,8 +1,6 @@
 ﻿//create angular module for application
-var app = angular.module('EmployeeManagement', [])
-
-
-app.controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
+angular.module('EmployeeManagement', ['ui.bootstrap']);
+angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
 
 	//show - hide form for Add New Employee Type
   $scope.createEmployeeType = true;
@@ -76,6 +74,21 @@ app.controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
   	$scope.addNewEmployee = true;
     $scope.showEmployeeList = $scope.showEmployeeList === false ? true: false;
   };
+  
+  $scope.requestedEmployeeList = [];
+  ///get employees for selected employee type
+  $scope.getEmployees = function(employeeType) {
+    $scope.requestedEmployeeList = [];
+    angular.forEach($scope.employeeList, function(employee) {
+      if(employee.type === employeeType) {
+        $scope.requestedEmployeeList.push(employee.name);
+      }
+    });
+
+    $scope.requestedEmployeeList;
+
+  };
+  
 
 
   //show - hide form for Add New Employee
@@ -118,9 +131,6 @@ app.controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
 	  }
  
   };
-
-
-
 
 
 }]);

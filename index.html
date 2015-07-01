@@ -1,10 +1,11 @@
 <html>
   <head>
     <title>Employee Management System!</title>
+    <script src="angular-min.js"></script>
+    <script src="bootstrap-tpls.js"></script>
+    <script src="app.js"></script>
     <link rel="stylesheet" href="bootstrap-min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="angular-min.js"></script>
-    <script src="app.js"></script>
   </head>
   <h1 style="text-align: center;">Employee Management System</h1>
   <body ng-app="EmployeeManagement">
@@ -55,7 +56,7 @@
               <div class="clearfix"></div>
               </br>
               <div class="row col-lg-6">
-                <button class="btn btn-primary" ng-click="remove($index)" ng-disabled="employeeTypes.length == 0">Remove</button>
+                <button class="btn btn-danger" ng-click="remove($index)" ng-disabled="employeeTypes.length == 0">Remove</button>
                 <button class="btn" ng-click="showRemoveType()">Cancel</button>
               </div>
 
@@ -63,21 +64,22 @@
           </div>
 
           <div ng-show="deleteEmployeeType"></div>
-         
 
           <div ng-hide="showEmployeeList">
             <h2>Employee List</h2>
-              <!-- <ul>
-                <li ng-repeat="tab in tabs" 
-                    ng-class="{active:isActiveTab(tab.url)}" 
-                    ng-click="onClickTab(tab)">{{tab.title}}</li>
-                </ul> -->
+
+            <tabset ng-if="employeeTypes.length !=0">
+              <tab ng-repeat="tab in employeeTypes" heading="{{tab.name}}s" active="tab.active" ng-click="getEmployees(tab.name)">
+                <p ng-repeat="list in requestedEmployeeList">{{list}}</p>
+              </tab>
+            </tabset>
+               
               <div class="clearfix"></div>
               </br>
 
               <div class="row col-lg-6">
-                <button class="btn btn-primary" ng-click="editEmployee()">Edit</button>
-                <button class="btn" ng-click="removeEmployee()">Remove</button>
+                <button class="btn btn-primary" ng-disabled="requestedEmployeeList.length == 0" ng-click="editEmployee()">Edit</button>
+                <button class="btn btn-danger" ng-disabled="requestedEmployeeList.length == 0" ng-click="removeEmployee()">Remove</button>
               </div>
             
           </div>
