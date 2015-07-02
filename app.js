@@ -1,6 +1,6 @@
 ﻿//create angular module for application
 angular.module('EmployeeManagement', ['ui.bootstrap']);
-angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window', '$timeout', function($scope, $window, $timeout) {
+angular.module('EmployeeManagement').controller('HomeCtrl', ['$scope', '$window', '$timeout', function($scope, $window, $timeout) {
 
 	//show - hide form for Add New Employee Type
   $scope.createEmployeeType = true;
@@ -17,8 +17,6 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   $scope.add = function() {
 
   	var match = true;
-  	$scope.error = false;
-  	$scope.added = false;
 
   	if($scope.newType && $scope.newType.name){
       
@@ -76,6 +74,7 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
 
   
   $scope.employeeList = [];
+  $scope.requestedEmployeeList = [];
 
 
   //show - hide form for Employee List
@@ -88,7 +87,6 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   };
 
   
-  $scope.requestedEmployeeList = [];
   ///get employees for selected employee type from tab
   $scope.getEmployees = function(employeeType) {
     $scope.requestedEmployeeList = [];
@@ -96,7 +94,7 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
     $scope.colorClass = " ";
     angular.forEach($scope.employeeList, function(employee) {
       if(employee.type === employeeType) {
-        $scope.requestedEmployeeList.push(employee.name);
+        $scope.requestedEmployeeList.push(employee);
       }
     });
 
@@ -106,18 +104,18 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   
   ///Disabled Edit / Remove Button default, set it to enabled once click on any employee
   $scope.isDisabled = true;
-  $scope.enableActions = function(Employee) {
+  $scope.enableActions = function(employee) {
     $scope.isDisabled = false;
-    $scope.selectedEmployee = Employee
+    $scope.selectedEmployee = employee
     $scope.colorClass = "gray-background";
 
   };
 
   ///remove Employee from Employee List section
-  $scope.removeEmployee = function(index) {
-    $scope.requestedEmployeeList.splice(index, 1); 
+  $scope.removeEmployee = function(employee) {
+    $scope.requestedEmployeeList.splice(employee, 1); 
     //delete from Main Employee List
-    $scope.employeeList.splice(index, 1); 
+    $scope.employeeList.splice(employee, 1); 
     $scope.employeeRemoved = true
     $scope.removed_msg = "Employee removed successfully !!"
     $timeout(function() {
@@ -128,10 +126,15 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   };
 
   ///edit Employee from Employee List section
-  $scope.editEmployee = function(Employee) {
+  $scope.editEmployee = function(employee) {
     $scope.showEmployeeList = true;
+    //show Add New Employee section and change button label
     $scope.addNewEmployee = false;
-    
+    $scope.button_label = "Update";
+    $scope.heading_label = "Edit";
+    //assign selected employee to newEmployee object
+    $scope.newEmployee = employee;
+    $scope.employeeIndex = $scope.employeeList.indexOf(employee);
     
   };
 
@@ -139,6 +142,9 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   //show - hide form for Add New Employee
   $scope.addNewEmployee = true;
   $scope.addEmployee = function() {
+    $scope.newEmployee = {};
+    $scope.button_label = "Add";
+    $scope.heading_label = "Add";
   	$scope.createEmployeeType = true;
   	$scope.deleteEmployeeType = true;
   	$scope.showEmployeeList = true;
@@ -151,7 +157,6 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   	if($scope.newEmployee && $scope.newEmployee.name && $scope.newEmployee.designation && $scope.newEmployee.type){
 	  	$scope.employeeList.push($scope.newEmployee);
 	  	$scope.employeeAdded = true;
-	  	//$scope.employeeUndo = false;
 	  	$scope.employeeSuccessMsg = "Employee added successfully !!"
 	    $scope.newEmployee = {}
       $timeout(function() {
@@ -161,10 +166,31 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
 	  }
 
   };
+
+
+  ///update Existing employee
+  $scope.updateEmployee = function(old_index) {
+    if($scope.newEmployee && $scope.newEmployee.name && $scope.newEmployee.designation && $scope.newEmployee.type){
+
+      //update value on specific index
+      $scope.employeeList.splice(old_index, $scope.newEmployee);
+      $scope.employeeAdded = true;
+      $scope.employeeSuccessMsg = "Employee updated successfully !!"
+      $scope.newEmployee = {};
+      $scope.button_label = "Add";
+      $scope.heading_label = "Add";
+      $timeout(function() {
+        $scope.employeeAdded = false;
+        $scope.employeeSuccessMsg = "";
+      }, 2000);
+    }
+
+  };
   
   $scope.counter = 1;
   ///undo last added employee / this action can be perform for last 3 employees only.
   $scope.undo = function() {
+    $scope.newEmployee = {};
   	if($scope.counter <= 3){
 	    $scope.employeeList.splice(-1,1);
 	    $scope.employeeUndo = true;
