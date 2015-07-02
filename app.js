@@ -74,11 +74,14 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   	$scope.addNewEmployee = true;
     $scope.showEmployeeList = $scope.showEmployeeList === false ? true: false;
   };
+
   
   $scope.requestedEmployeeList = [];
-  ///get employees for selected employee type
+  ///get employees for selected employee type from tab
   $scope.getEmployees = function(employeeType) {
     $scope.requestedEmployeeList = [];
+    $scope.isDisabled = true;
+    $scope.colorClass = " ";
     angular.forEach($scope.employeeList, function(employee) {
       if(employee.type === employeeType) {
         $scope.requestedEmployeeList.push(employee.name);
@@ -89,6 +92,24 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
 
   };
   
+  ///Disabled Edit / Remove Button default, set it to enabled once click on any employee
+  $scope.isDisabled = true;
+  $scope.enableActions = function(Employee) {
+    $scope.isDisabled = false;
+    $scope.selectedEmployee = Employee
+    $scope.colorClass = "gray-background";
+
+  };
+
+  ///remove Employee from Employee List section
+  $scope.removeEmployee = function(index) {
+    $scope.requestedEmployeeList.splice(index, 1); 
+    //delete from Main Employee List
+    $scope.employeeList.splice(index, 1); 
+    $scope.employeeRemoved = true
+    $scope.removed_msg = "Employee removed successfully !!"
+    
+  };
 
 
   //show - hide form for Add New Employee

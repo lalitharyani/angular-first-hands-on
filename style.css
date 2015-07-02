@@ -1,7 +1,7 @@
 .success{
 	text-align:center;
 	color: green;
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .remove{
@@ -42,3 +42,13 @@ li {
     background-color: #FFF;
     color: #000;
 }
+
+p {
+    cursor:pointer;
+}
+
+.gray-background{
+    background-color: gray;
+    width: 30%;
+}
+

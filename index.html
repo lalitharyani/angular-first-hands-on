@@ -68,10 +68,12 @@
           <div ng-hide="showEmployeeList">
             <h2>Employee List</h2>
 
+            <div ng-show="employeeRemoved" class="remove">{{removed_msg}}</div>
+
             <tabset ng-if="employeeTypes.length !=0">
               <tab ng-repeat="tab in employeeTypes" heading="{{tab.name}}s" active="tab.active" ng-click="getEmployees(tab.name)">
               </br>
-                <p ng-repeat="list in requestedEmployeeList">{{list}}</p>
+                <p ng-class="(selectedEmployee == employeeName ? colorClass : '')" ng-repeat="employeeName in requestedEmployeeList" ng-click="enableActions(employeeName)">{{employeeName}}</p>
               </tab>
             </tabset>
                
@@ -79,8 +81,8 @@
               </br>
 
               <div class="row col-lg-6">
-                <button class="btn btn-primary" ng-disabled="requestedEmployeeList.length == 0" ng-click="editEmployee()">Edit</button>
-                <button class="btn btn-danger" ng-disabled="requestedEmployeeList.length == 0" ng-click="removeEmployee()">Remove</button>
+                <button class="btn btn-primary" ng-disabled="isDisabled" ng-click="editEmployee()">Edit</button>
+                <button class="btn btn-danger" ng-disabled="isDisabled" ng-click="removeEmployee(selectedEmployee)">Remove</button>
               </div>
             
           </div>
