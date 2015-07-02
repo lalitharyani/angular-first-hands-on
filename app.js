@@ -1,6 +1,6 @@
 ﻿//create angular module for application
 angular.module('EmployeeManagement', ['ui.bootstrap']);
-angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window', function($scope, $window) {
+angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window', '$timeout', function($scope, $window, $timeout) {
 
 	//show - hide form for Add New Employee Type
   $scope.createEmployeeType = true;
@@ -28,6 +28,10 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
             match = false;
             $scope.error = true;
             $scope.error_msg = 'You have already added this Employee Type.';
+            $timeout(function() {
+              $scope.error = false;
+              $scope.error_msg = "";
+            }, 2000);
         }
       });
 
@@ -36,6 +40,10 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
         	$scope.employeeTypes.push($scope.newType);
         	$scope.added = true;
 		      $scope.submit_msg = "Employee Type created successfully !!"
+          $timeout(function() {
+            $scope.added = false;
+            $scope.submit_msg = "";
+          }, 2000);
         }
 
 	  }
@@ -59,6 +67,10 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
     $scope.employeeTypes.splice($index, 1);   
     $scope.removed = true
   	$scope.remove_msg = "Employee Type removed successfully !!"
+    $timeout(function() {
+      $scope.removed = false;
+      $scope.remove_msg = "";
+    }, 2000);
 
   };
 
@@ -108,6 +120,18 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
     $scope.employeeList.splice(index, 1); 
     $scope.employeeRemoved = true
     $scope.removed_msg = "Employee removed successfully !!"
+    $timeout(function() {
+      $scope.employeeRemoved = false;
+      $scope.removed_msg = "";
+    }, 2000);
+    
+  };
+
+  ///edit Employee from Employee List section
+  $scope.editEmployee = function(Employee) {
+    $scope.showEmployeeList = true;
+    $scope.addNewEmployee = false;
+    
     
   };
 
@@ -127,9 +151,13 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
   	if($scope.newEmployee && $scope.newEmployee.name && $scope.newEmployee.designation && $scope.newEmployee.type){
 	  	$scope.employeeList.push($scope.newEmployee);
 	  	$scope.employeeAdded = true;
-	  	$scope.employeeUndo = false;
+	  	//$scope.employeeUndo = false;
 	  	$scope.employeeSuccessMsg = "Employee added successfully !!"
 	    $scope.newEmployee = {}
+      $timeout(function() {
+        $scope.employeeAdded = false;
+        $scope.employeeSuccessMsg = "";
+      }, 2000);
 	  }
 
   };
@@ -142,14 +170,19 @@ angular.module('EmployeeManagement').controller('MainCtrl', ['$scope', '$window'
 	    $scope.employeeUndo = true;
 	    $scope.employeeUndoMsg = "Last added employee removed successfully !!"
 	    $scope.employeeList;
-
 	    $scope.counter += 1;
 
+
 	  }else{
-     
-     $scope.employeeUndoMsg = "You have already removed last 3 added employees."
+      $scope.employeeUndo = true;
+      $scope.employeeUndoMsg = "You have already removed last 3 added employees."
 
 	  }
+
+    $timeout(function() {
+      $scope.employeeUndo = false;
+      $scope.employeeUndoMsg = "";
+    }, 2000);
  
   };
 
